@@ -1,4 +1,4 @@
 node_modules/
 *.env
-*.md
+colon after slash in web links.md
 .cache/
