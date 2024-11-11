@@ -1,0 +1,38 @@
+doctype html 
+html 
+  head 
+    //- interpolation --> using the #{} which looks like the ES6 template string being ${}
+    title Natours | #{tour}
+    //- <link rel="stylesheet" href="css/style.css"/> 
+    link(rel='stylesheet' href='css/style.css')
+    link(rel='shortcut icon' type='image/png' href ='img/favicon.png')
+    
+  body  
+    //- using the =, everything typed after it will be treated as JavaScript
+    h1= tour
+
+    //- buffered code which will add in the output 
+    h2= user.toUpperCase() 
+
+    // This will output to the html
+    //- Using the dash after the double slash wont output
+    
+    //- unbuffered code which is not going to add anything to the ouput (using the dash)
+    - const x = 9; 
+    h2= 2*x
+
+    //- The same as writing <h1> The Park Camper </h1>
+    //- h1 The Park Camper 
+    p A random text
+
+
+    // in pug, class is written with a . , 
+    //ex: header class="header", will be written as: header.header
+    
+    //when creating a div with a class, ex: div.header__logo, all u need to write is .header__logo without the div
+
+    // using the : will allow writing on the same line
+    li: a(href='#') About us
+    //the same as this
+    li 
+      a(href='#') About us
