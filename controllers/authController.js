@@ -56,7 +56,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   // the req.protocol will be either http or https
   // the req.get('host') will be the domain
   const url = `${req.protocol}://${req.get('host')}/me`;
-  console.log(url);
+  // console.log(url);
   await new Email(newUser, url).sendWelcome();
 
   createAndSendToken(newUser, 201, res);

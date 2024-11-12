@@ -41,7 +41,7 @@ if (userDataForm) {
 
   document.querySelector('#photo').addEventListener('change', function (e) {
     const [file] = e.target.files;
-    console.log(file);
+    // console.log(file);
     if (file && file.type.startsWith('image')) {
       const userPhoto = document.querySelector('.form__user-photo');
 

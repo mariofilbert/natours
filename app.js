@@ -7,6 +7,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 // eslint-disable-next-line import/newline-after-import
 const AppError = require('./utils/appError');
@@ -100,6 +101,9 @@ app.use(
 //   console.log('Hello from the middleware 👋');
 //   next();
 // });
+
+// Compressing the response (compression package)
+app.use(compression());
 
 // Test middlewares
 app.use((req, res, next) => {
