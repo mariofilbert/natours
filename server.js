@@ -51,6 +51,7 @@ mongoose
 // console.log(app.get('env'));
 // console.log(process.env);
 
+// defining the port through process.env.PORT is important when deploying app through heroku
 const port = 3000 || process.env.PORT;
 const server = app.listen(port, () => {
   console.log(`App is running on port ${port}`);

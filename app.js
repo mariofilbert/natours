@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 // eslint-disable-next-line import/newline-after-import
 const AppError = require('./utils/appError');
@@ -16,17 +17,31 @@ const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
+const bookingController = require('./controllers/bookingController');
 const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
+
+// used to trust proxy
+app.set('trust proxy', true);
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 //1) GLOBAL MIDDLEWARES
+// Implement CORS
+app.use(cors());
+// Access-Control-Allow-Origin * --> allows everyone to consume our API
+
+// ex: we have our api on api.natours.com, and want to use it on natours.com (the frontend)
+// app.use(cors({origin: 'https://www.natours.com'}))
+// only works on simple requests (get and post requests)
+
+// responding to preflight requests
+app.options('*', cors());
+// app.options('/api/v1/tours/:id', cors());
 
 // Serving static files
-
 // app.use(express.static(`${__dirname}/public`));
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -68,6 +83,15 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
+//the route is put right here and not in the bookingRoutes, because the function(webhookCheckout) requires a raw body (raw form - string or buffer) coming from stripe and not a JSON object
+app.post(
+  '/webhook-checkout',
+  //added body parsing as a raw buffer instead of parsing it to JSON
+  express.raw({ type: 'application/json' }),
+  bookingController.webhookCheckout,
+);
+
+// when request comes in this middleware, the body will be parsed and converted to JSON
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' })); // limit amount of data
 

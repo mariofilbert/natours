@@ -6,7 +6,12 @@ const bookingController = require('../controllers/bookingController');
 const router = express.Router();
 
 router.get('/me', authController.protect, viewController.getAccount);
-router.get('/my-tours', authController.protect, viewController.getMyTours);
+router.get(
+  '/my-tours',
+  // bookingController.createBookingCheckout,
+  authController.protect,
+  viewController.getMyTours,
+);
 router.post(
   '/submit-user-data',
   authController.protect,
@@ -17,11 +22,7 @@ router.post(
 router.use(authController.isLoggedIn);
 
 // Rendering the template file from base.pug
-router.get(
-  '/',
-  bookingController.createBookingCheckout,
-  viewController.getOverview,
-);
+router.get('/', viewController.getOverview);
 router.get('/tours/:slug', viewController.getTour);
 
 // /login route

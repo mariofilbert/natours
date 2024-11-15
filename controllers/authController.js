@@ -22,16 +22,21 @@ const createAndSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
 
   const cookieOptions = {
+    // token expiration
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
     ),
+    // make the cookie only accessible via http
     httpOnly: true,
   };
+
+  // can only be sent on a secure connection (https)
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
   // Remove password from output, will not affect database because it is not saved but only set to undefined before sending the response to the client
   user.password = undefined;
 
+  // name, value, options
   res.cookie('jwt', token, cookieOptions);
 
   res.status(statusCode).json({
