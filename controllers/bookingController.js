@@ -22,11 +22,8 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
         product_data: {
           name: `${tour.name} Tour`,
           description: tour.summary,
-          // need to be live images as they are stored on the stripe's server
-          images: [
-            // `${req.protocol}://${req.get('host')}/public/img/tours/${tour.imageCover}`,
-            `http://www.natours.dev/img/tours/${tour.imageCover}`,
-          ],
+          // need to be live images (from live websites) as they are stored on the stripe's server
+          images: [`${req.protocol}://${req.get('host')}/${tour.imageCover}`],
         },
       },
     },
@@ -87,7 +84,9 @@ const createBookingCheckout = async (session) => {
   // available from the session object
   const tour = session.client_reference_id;
   const user = (await User.findOne({ email: session.customer_email })).id;
-  const price = session.line_items[0].price_data.unit_amount / 100;
+
+  // based on the log of the session (from the stripe website)
+  const price = session.amount_total / 100;
 
   // Creating the new booking document
   await Booking.create({ tour, user, price });
