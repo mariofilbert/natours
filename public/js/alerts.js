@@ -6,10 +6,16 @@ export const hideAlert = () => {
 };
 
 // type is 'success' or 'error
-export const showAlert = (type, msg) => {
+export const showAlert = (type, msg, time = 5) => {
   hideAlert();
 
-  const markup = `<div class="alert alert--${type}">${msg}</div>`;
+  const markup = `
+  <div class="alert alert--${type}">
+    <span>${msg}</span>
+    <button class="alert--btn">Okay</button>
+  </div>`;
   document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
-  window.setTimeout(hideAlert, 3000);
+  document.querySelector('.alert--btn').addEventListener('click', hideAlert);
+
+  window.setTimeout(hideAlert, time * 1000);
 };
