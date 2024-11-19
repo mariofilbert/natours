@@ -23,7 +23,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
           name: `${tour.name} Tour`,
           description: tour.summary,
           // need to be live images (from live websites) as they are stored on the stripe's server
-          images: [`${req.protocol}://${req.get('host')}/${tour.imageCover}`],
+          images: [`http://www.natours.dev/img/tours/${tour.imageCover}`],
         },
       },
     },
@@ -40,7 +40,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     success_url: `${req.protocol}://${req.get('host')}/my-tours?alert=booking`,
 
     // redirection after failed payments
-    cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
+    cancel_url: `${req.protocol}://${req.get('host')}/tours/${tour.slug}`,
     // customer email
     customer_email: req.user.email,
     // field to pass in some data about the sesion currently created (getting access to the session object)
